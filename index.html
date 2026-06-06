@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta http-equiv="Permissions-Policy" content="camera=*"/>
+  <title>Hand Tracker — 21-Point 3D Pipeline</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-center">
+    <h1>Hand Tracker</h1>
+    <div class="sub">MediaPipe Hands · 21-Point 3D Pipeline · Real-Time Tracking</div>
+  </div>
+  <div class="theme-toggle-wrap">
+    <span class="theme-toggle-label">Switch Theme</span>
+    <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode" title="Switch theme">
+      <span class="toggle-icon" id="toggle-icon-label">🌙</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── STATUS ── -->
+<div id="status-bar">
+  <div id="status-dot"></div>
+  <span id="status-text">Initialising MediaPipe...</span>
+</div>
+
+<!-- ── MAIN GRID: VIDEO + 3D PIPELINE ── -->
+<div class="main-grid">
+
+  <!-- 01 VIDEO FEED -->
+  <div class="panel">
+    <div class="panel-label"><span class="pid">01</span> Video Feed</div>
+    <div class="video-wrap">
+      <video id="input_video" autoplay playsinline webkit-playsinline muted></video>
+      <canvas id="vid_canvas"></canvas>
+      <canvas id="skel_canvas"></canvas>
+      <div id="no-hand-msg">
+        <div class="icon">🖐</div>
+        <div>NO HAND DETECTED</div>
+      </div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div id="fps-badge">-- FPS</div>
+    </div>
+  </div>
+
+  <!-- 07 21-POINT 3D PIPELINE -->
+  <div class="panel">
+    <div class="panel-label">
+      <span><span class="pid">07</span> 21-Point 3D Media Pipeline</span>
+      <span id="ar-style-label">PERSPECTIVE</span>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="ar_canvas"></canvas>
+      <div id="no-ar-msg">
+        <div class="icon">🖐</div>
+        <div>NO HAND DETECTED</div>
+      </div>
+    </div>
+    <div class="ar-controls">
+      <button class="btn btn-sm" id="meshStyleBtn">Style: Perspective</button>
+      <button class="btn btn-sm" id="meshDepthBtn">Depth: ON</button>
+    </div>
+  </div>
+
+</div><!-- /.main-grid -->
+
+<!-- ── CAMERA CONTROLS ── -->
+<div class="controls">
+  <button class="btn primary" id="startBtn" disabled>Start Camera</button>
+  <button class="btn danger"  id="stopBtn"  disabled>Stop</button>
+</div>
+
+<!-- ── OPTIONS ROW ── -->
+<div class="speller-wrap">
+  <div class="panel">
+    <div class="panel-label"><span class="pid">02</span> Options</div>
+    <div class="speller-body">
+      <div class="tts-row">
+        <label class="tts-toggle"><input type="checkbox" id="soundEffects" checked/> Audio Synth</label>
+        <label class="tts-toggle"><input type="checkbox" id="mirrorMode" checked/> Mirror Video</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LANDMARK COORDINATES ── -->
+<div class="bottom-row" style="grid-template-columns:1fr;">
+  <div class="panel">
+    <div class="panel-label"><span class="pid">04</span> Landmark Coordinates (21 pts · xyz)</div>
+    <div class="coords-body">
+      <table class="coords-table">
+        <thead>
+          <tr><th>#</th><th>Name</th><th>X</th><th>Y</th><th>Z depth</th></tr>
+        </thead>
+        <tbody id="coords-tbody">
+          <tr><td colspan="5" style="color:var(--text-dim);padding:8px 0">Start camera to see live data</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+</body>
+</html>
